@@ -14,7 +14,7 @@ class ProductScreen extends StatelessWidget {
           children: [
             Stack(
               children:[
-                  ProductImage(),
+                  const ProductImage(),
                   Positioned(
                     top: 60,
                     left: 20,
