@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/models/models.dart';
 import 'package:products_app/screens/loading_screen.dart';
 import 'package:products_app/services/product_service.dart';
 import 'package:products_app/widgets/widgets.dart';
@@ -7,6 +8,10 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
    
   const HomeScreen({Key? key}) : super(key: key);
+
+  get available => null;
+
+  get name => null;
   
 
   @override
@@ -33,7 +38,14 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: (){},
+        onPressed: (){
+          
+          productService.selectedProduct = Product(
+            available: false, 
+            name: 'nombre', 
+            price: 0);   
+          Navigator.pushNamed(context,'product');
+        },
       ),
     );
   }

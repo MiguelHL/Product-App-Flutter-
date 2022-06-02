@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:products_app/models/models.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,7 @@ class ProductService extends ChangeNotifier{
   final String _baseUrl='flutter-varios-1b386-default-rtdb.firebaseio.com';
   final List<Product> products = [];
   late Product selectedProduct;
+  File? newPictureFile;
   bool isLoading = true;
   bool isSaving = false;
 
@@ -40,17 +42,19 @@ class ProductService extends ChangeNotifier{
     notifyListeners();
 
     if(product.id == null){
+      
+      await createProduct(product);
 
     }else{
-
+      
       final String idProduct=await updateProduct(product);
-      products.forEach((element){
+      for (var element in products) {
         if(element.id == idProduct){
           element.name=product.name;
           element.price= product.price;
           element.available = product.available;
         }
-      });   
+      }   
 
     }
 
@@ -67,6 +71,29 @@ class ProductService extends ChangeNotifier{
     print(decodeData);
 
     return product.id.toString();
+
+  }
+
+    Future<String> createProduct (Product product) async{
+    
+    final url = Uri.https(_baseUrl,'Products.json');
+    final response = await http.post(url, body: product.toJson());
+    final decodeData = json.decode(response.body);
+    product.id = decodeData['name'];
+    products.add(product);
+    //print(decodeData);
+    //products.add(product);
+    return product.id!;
+
+  }
+
+  void updateSelectedProductImage(String path){
+
+    selectedProduct.picture=path;
+    newPictureFile = File.fromUri(Uri(path: path));
+
+    notifyListeners();
+
 
   }
 
