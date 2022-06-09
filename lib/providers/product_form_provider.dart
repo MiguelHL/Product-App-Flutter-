@@ -10,8 +10,11 @@ class ProductFormProvider extends ChangeNotifier{
 
  bool isValidForm(){
 
+   // ignore: avoid_print
    print(product.name);
+   // ignore: avoid_print
    print(product.price);
+   // ignore: avoid_print
    print(product.available);
 
    return formkey.currentState?.validate()?? false;
